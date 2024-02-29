@@ -14,8 +14,6 @@ public class Couple {
     public String toString() {
         return "(" + s + ", " + hash + ")";
     }
-
-
      
  }
  
