@@ -9,8 +9,7 @@ public class StringHashSet {
     static final double T = 0.7;
 
     public StringHashSet() {
-        data = new LinkedList[4];
-        // Initialise chaque élément du tableau avec une nouvelle LinkedList
+        data = new LinkedList[4]; // Initialise chaque élément du tableau avec une nouvelle LinkedList
         for (int i = 0; i < size; i++) {
             data[i] = new LinkedList<Couple>();
         }
@@ -48,16 +47,13 @@ public class StringHashSet {
     }
 
     boolean add(String s){
-
         int hash = s.hashCode();
         int l = data.length;
         Couple cpl = new Couple(s,hash);
         int index = hash%l;
-
         if (data[index] == null) {
             data[index] = new LinkedList<>();
         }
-
         data[index].add(cpl);
         size++;
         return true;
