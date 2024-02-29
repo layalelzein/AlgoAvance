@@ -42,10 +42,30 @@ public class StringHashSet {
         return true;
     }
 
-    public static void main (String[] args){
+    boolean contains(String S) {
+        int hash = S.hashCode();
+        int index = hash % data.length;
+        if (data[index] != null) {
+            LinkedList<Couple> couples = data[index];
+            for (int i = 0; i < couples.size(); i++) {
+                Couple cpl = couples.get(i);
+                if (cpl.s.equals(S)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static void main(String[] args) {
         StringHashSet shs = new StringHashSet();
         shs.add("hey");
-        System.out.println(shs.toString()); 
+        shs.add("hello");
+        shs.add("world");
+        
+        System.out.println("Contains 'hey': " + shs.contains("hey"));
+        System.out.println("Contains 'hi': " + shs.contains("hi"));
     }
+    
 
 }
