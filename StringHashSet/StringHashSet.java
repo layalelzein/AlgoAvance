@@ -4,18 +4,9 @@ import java.util.LinkedList;
 
 public class StringHashSet {
 
-    LinkedList <Couple>[] data;
+    LinkedList <Couple>[] data = new LinkedList[10];
     private int size = 0;
-    static final double T = 0.7;
-
-    public StringHashSet() {
-        data = new LinkedList[4];
-        // Initialise chaque élément du tableau avec une nouvelle LinkedList
-        for (int i = 0; i < size; i++) {
-            data[i] = new LinkedList<Couple>();
-        }
-    }
-    
+    static final double T = 0.7;    
 
     @Override
     public String toString() {
@@ -44,11 +35,9 @@ public class StringHashSet {
         }
     }
 
-
-
     public static void main(String[] args) {
         StringHashSet sHS = new StringHashSet();
-
+        
         sHS.grow();
     
     }
