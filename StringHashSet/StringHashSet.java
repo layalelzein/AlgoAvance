@@ -41,6 +41,10 @@ public class StringHashSet {
         Couple cpl = new Couple(s,hash);
         int index = hash%l;
 
+        if (data[index] == null) {
+            data[index] = new LinkedList<>();
+        }
+
         data[index].add(cpl);
         size++;
         return true;
