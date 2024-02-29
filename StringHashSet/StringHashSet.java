@@ -27,6 +27,7 @@ public class StringHashSet {
     }
 
     boolean add(String s){
+
         int hash = s.hashCode();
         int l = data.length;
         Couple cpl = new Couple(s,hash);
@@ -45,9 +46,6 @@ public class StringHashSet {
         StringHashSet shs = new StringHashSet();
         shs.add("hey");
         System.out.println(shs.toString()); 
-
     }
-
-    
 
 }
