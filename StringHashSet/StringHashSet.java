@@ -8,6 +8,14 @@ public class StringHashSet {
     private int size = 0;
     static final double T = 0.7;
 
+    public StringHashSet() {
+    
+        // Initialise chaque élément du tableau avec une nouvelle LinkedList
+        for (int i = 0; i < size; i++) {
+            data[i] = new LinkedList<Couple>();
+        }
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -32,10 +40,6 @@ public class StringHashSet {
         int l = data.length;
         Couple cpl = new Couple(s,hash);
         int index = hash%l;
-
-        if (data[index] == null) {
-            data[index] = new LinkedList<>();
-        }
 
         data[index].add(cpl);
         size++;
