@@ -9,9 +9,10 @@ public class StringHashSet {
     static final double T = 0.7;
 
     public StringHashSet() {
-        data = new LinkedList[4]; // Initialise chaque élément du tableau avec une nouvelle LinkedList
-        for (int i = 0; i < size; i++) {
-            data[i] = new LinkedList<Couple>();
+        data = new LinkedList[4];
+        // Initialiser chaque élément avec une nouvelle LinkedList
+        for (int i = 0; i < data.length; i++) {
+            data[i] = new LinkedList<>();
         }
     }
 
@@ -34,23 +35,29 @@ public class StringHashSet {
     }
 
     void grow() {
-        if(size/data.length > T) {
-            LinkedList <Couple>[] dataDouble = new LinkedList [2*data.length];
-            for (int i = 0; i < data.length; i++) {
-                dataDouble[i] = data[i];
+        if ((double)size / data.length > T) {
+            LinkedList<Couple>[] newData = new LinkedList[data.length * 2];
+            for (int i = 0; i < newData.length; i++) {
+                newData[i] = new LinkedList<>();
             }
-            data = dataDouble;
-            System.out.println(data.length);
-        } else {
-            return;
+            for (LinkedList<Couple> list : data) {
+                if (list != null) {
+                    for (Couple c : list) {
+                        int newIndex = (c.hash % newData.length + newData.length) % newData.length;
+                        newData[newIndex].add(c);
+                    }
+                }
+            }
+            data = newData;
         }
     }
 
     boolean add(String s){
+        grow();
         int hash = s.hashCode();
         int l = data.length;
         Couple cpl = new Couple(s,hash);
-        int index = hash%l;
+        int index = (hash % l + l) % l; // Correction pour éviter l'indice négatif
         if (data[index] == null) {
             data[index] = new LinkedList<>();
         }
@@ -58,8 +65,9 @@ public class StringHashSet {
         size++;
         return true;
     }
+    
 
-    boolean contains(String S) {
+    /*boolean contains(String S) {
         int hash = S.hashCode();
         int index = hash % data.length;
         if (data[index] != null) {
@@ -72,6 +80,18 @@ public class StringHashSet {
             }
         }
         return false;
+    }*/
+
+    boolean contains(String S) {
+        int hash = S.hashCode();
+        int index = (hash % data.length + data.length) % data.length;
+        LinkedList<Couple> bucket = data[index];
+        for (Couple c : bucket) {
+            if (c.s.equals(S)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static void main(String[] args) {
@@ -79,8 +99,21 @@ public class StringHashSet {
         shs.add("hey");
         shs.add("hello");
         shs.add("world");
-        
+    
+        for(int i = 0; i < 1000; i++) {
+            shs.add("Element" + i);
+        }
+    
+        // Mesurer le temps d'exécution de contains
+        long startTime = System.nanoTime(); 
+        boolean contient = shs.contains("Element500"); // Exemple de recherche
+        long endTime = System.nanoTime(); 
+        long duration = endTime - startTime;
+
+        System.out.println("Temps d'exécution de contains: " + duration + " nanosecondes.");
+    
         System.out.println("Contains 'hey': " + shs.contains("hey"));
         System.out.println("Contains 'hi': " + shs.contains("hi"));
     }
+    
 }
