@@ -66,7 +66,9 @@ public class StringArrayList implements Iterable<String> {
     String toStr() {
         String string = "";
         for (int i = 0; i < nb; i++) {
-                string += data[i] + " ";
+            if (data[i] == null)
+                return string;
+            string += data[i] + " ";
         }
         return string;
     }
