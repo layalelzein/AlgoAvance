@@ -172,6 +172,49 @@ public class StringArrayList implements Iterable<String> {
             String nextElement = iterator.next();
             System.out.println(nextElement);
         }
+
+        StringArrayList sal1 = new StringArrayList();
+
+        for (int i = 0; i < 1000; i++) {
+            sal1.add(i, "Element" + i); // Utilisation de la méthode add avec l'index
+        }
+        
+        StringArrayList sal2 = new StringArrayList();
+        
+        for (int i = 0; i < 100000; i++) {
+            sal2.add(i, "Element" + i); // Utilisation de la méthode add avec l'index
+        }
+        
+        StringArrayList sal3 = new StringArrayList();
+        
+        for (int i = 0; i < 1000000; i++) {
+            sal3.add(i, "Element" + i); // Utilisation de la méthode add avec l'index
+        }        
+        
+        // Mesurer le temps d'exécution de contains
+        long startTime = System.nanoTime();
+        boolean contient1 = sal1.contains("Element500");
+        long endTime = System.nanoTime();
+        long duration = endTime - startTime;
+        
+        System.out.println("Temps d'exécution de contains pour sal1 : " + duration + " nanosecondes.");
+        
+        // Mesurer le temps d'exécution de contains
+        long startTime2 = System.nanoTime();
+        boolean contient2 = sal2.contains("Element50000");
+        long endTime2 = System.nanoTime();
+        long duration2 = endTime2 - startTime2;
+        
+        System.out.println("Temps d'exécution de contains pour sal2 : " + duration2 + " nanosecondes.");
+        
+        // Mesurer le temps d'exécution de contains
+        long startTime3 = System.nanoTime();
+        boolean contient3 = sal3.contains("Element500000");
+        long endTime3 = System.nanoTime();
+        long duration3 = endTime3 - startTime3;
+        
+        System.out.println("Temps d'exécution de contains pour sal3 : " + duration3 + " nanosecondes.");
+        
     }
 
     public Iterator<String> iterator() {

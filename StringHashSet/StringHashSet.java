@@ -99,21 +99,51 @@ public class StringHashSet {
         shs.add("hey");
         shs.add("hello");
         shs.add("world");
-    
+        System.out.println("Contains 'hey': " + shs.contains("hey"));
+        System.out.println("Contains 'hi': " + shs.contains("hi"));        
+
+        StringHashSet shs1 = new StringHashSet();
+
         for(int i = 0; i < 1000; i++) {
-            shs.add("Element" + i);
+            shs1.add("Element" + i);
+        }
+
+        StringHashSet shs2 = new StringHashSet();
+
+        for(int i = 0; i < 100000; i++) {
+            shs2.add("Element" + i);
+        }
+
+        StringHashSet shs3 = new StringHashSet();
+
+        for(int i = 0; i < 1000000; i++) {
+            shs3.add("Element" + i);
         }
     
         // Mesurer le temps d'exécution de contains
         long startTime = System.nanoTime(); 
-        boolean contient = shs.contains("Element500"); // Exemple de recherche
+        boolean contient1 = shs1.contains("Element500");
         long endTime = System.nanoTime(); 
         long duration = endTime - startTime;
 
         System.out.println("Temps d'exécution de contains: " + duration + " nanosecondes.");
-    
-        System.out.println("Contains 'hey': " + shs.contains("hey"));
-        System.out.println("Contains 'hi': " + shs.contains("hi"));
+
+        // Mesurer le temps d'exécution de contains
+        long startTime2 = System.nanoTime(); 
+        boolean contient2 = shs2.contains("Element50000");
+        long endTime2 = System.nanoTime(); 
+        long duration2 = endTime2 - startTime2;
+
+        System.out.println("Temps d'exécution de contains2: " + duration2 + " nanosecondes.");
+
+        // Mesurer le temps d'exécution de contains
+        long startTime3 = System.nanoTime(); 
+        boolean contient3 = shs3.contains("Element500000");
+        long endTime3 = System.nanoTime(); 
+        long duration3 = endTime3 - startTime3;
+
+        System.out.println("Temps d'exécution de contains3: " + duration3 + " nanosecondes.");   
+        
     }
     
 }

@@ -307,6 +307,43 @@ public class StringTreeSet implements Comparable<StringTreeSet> {
 
         treeSet.remove("ab");
         System.out.println("Contenu de l'arbre : " + treeSet.toString());
+
+        StringTreeSet treeSet1 = new StringTreeSet();
+        StringTreeSet treeSet2 = new StringTreeSet();
+        StringTreeSet treeSet3 = new StringTreeSet();
+
+        // Ajouter des éléments à chaque ensemble
+        for (int i = 0; i < 1000; i++) {
+            treeSet1.add("Element" + i);
+        }
+
+        for (int i = 0; i < 100000; i++) {
+            treeSet2.add("Element" + i);
+        }
+
+        for (int i = 0; i < 1000000; i++) {
+            treeSet3.add("Element" + i);
+        }
+
+        // Mesurer le temps d'exécution de contains pour chaque ensemble
+        long startTime1 = System.nanoTime();
+        boolean contains1 = treeSet1.contains("Element500");
+        long endTime1 = System.nanoTime();
+        long duration1 = endTime1 - startTime1;
+        System.out.println("Temps d'exécution de contains pour treeSet1 : " + duration1 + " nanosecondes.");
+
+        long startTime2 = System.nanoTime();
+        boolean contains2 = treeSet2.contains("Element50000");
+        long endTime2 = System.nanoTime();
+        long duration2 = endTime2 - startTime2;
+        System.out.println("Temps d'exécution de contains pour treeSet2 : " + duration2 + " nanosecondes.");
+
+        long startTime3 = System.nanoTime();
+        boolean contains3 = treeSet3.contains("Element500000");
+        long endTime3 = System.nanoTime();
+        long duration3 = endTime3 - startTime3;
+        System.out.println("Temps d'exécution de contains pour treeSet3 : " + duration3 + " nanosecondes.");
+
     }
     
 }
