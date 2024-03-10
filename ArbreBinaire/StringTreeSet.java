@@ -308,41 +308,33 @@ public class StringTreeSet implements Comparable<StringTreeSet> {
         treeSet.remove("ab");
         System.out.println("Contenu de l'arbre : " + treeSet.toString());
 
-        StringTreeSet treeSet1 = new StringTreeSet();
-        StringTreeSet treeSet2 = new StringTreeSet();
-        StringTreeSet treeSet3 = new StringTreeSet();
+        // Bloc de test de performance commence ici
+        int[] iterations = {10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000};
 
-        // Ajouter des éléments à chaque ensemble
-        for (int i = 0; i < 1000; i++) {
-            treeSet1.add("Element" + i);
+        for (int iter : iterations) {
+            long addTotalDuration = 0;
+            long containsTotalDuration = 0;
+
+            for (int i = 0; i < iter; i++) {
+                long addStartTime = System.nanoTime();
+                treeSet.add("Element " + i); // Ajout d'un élément à l'ensemble
+                long addEndTime = System.nanoTime();
+                addTotalDuration += (addEndTime - addStartTime); // Durée en nanosecondes
+
+                long containsStartTime = System.nanoTime();
+                treeSet.contains("Element " + i); // Recherche d'un élément spécifique dans l'ensemble
+                long containsEndTime = System.nanoTime();
+                containsTotalDuration += (containsEndTime - containsStartTime); // Durée en nanosecondes
+            }
+
+            long addAverageDuration = addTotalDuration / iter; // Éviter la division par zéro
+            long containsAverageDuration = containsTotalDuration / iter; // Éviter la division par zéro
+
+            System.out.println("Pour " + iter + " itérations :");
+            System.out.println("Temps d'exécution moyen de la méthode add : " + addAverageDuration + " nanosecondes");
+            System.out.println("Temps d'exécution moyen de la méthode contains : " + containsAverageDuration + " nanosecondes");
+            System.out.println();
         }
-
-        for (int i = 0; i < 100000; i++) {
-            treeSet2.add("Element" + i);
-        }
-
-        for (int i = 0; i < 1000000; i++) {
-            treeSet3.add("Element" + i);
-        }
-
-        // Mesurer le temps d'exécution de contains pour chaque ensemble
-        long startTime1 = System.nanoTime();
-        boolean contains1 = treeSet1.contains("Element500");
-        long endTime1 = System.nanoTime();
-        long duration1 = endTime1 - startTime1;
-        System.out.println("Temps d'exécution de contains pour treeSet1 : " + duration1 + " nanosecondes.");
-
-        long startTime2 = System.nanoTime();
-        boolean contains2 = treeSet2.contains("Element50000");
-        long endTime2 = System.nanoTime();
-        long duration2 = endTime2 - startTime2;
-        System.out.println("Temps d'exécution de contains pour treeSet2 : " + duration2 + " nanosecondes.");
-
-        long startTime3 = System.nanoTime();
-        boolean contains3 = treeSet3.contains("Element500000");
-        long endTime3 = System.nanoTime();
-        long duration3 = endTime3 - startTime3;
-        System.out.println("Temps d'exécution de contains pour treeSet3 : " + duration3 + " nanosecondes.");
 
     }
     
