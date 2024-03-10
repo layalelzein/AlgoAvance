@@ -102,48 +102,40 @@ public class StringHashSet {
         System.out.println("Contains 'hey': " + shs.contains("hey"));
         System.out.println("Contains 'hi': " + shs.contains("hi"));        
 
-        StringHashSet shs1 = new StringHashSet();
 
-        for(int i = 0; i < 1000; i++) {
-            shs1.add("Element" + i);
+        // Mesure du temps d'exécution moyen pour les méthodes add et contains
+
+        int[] iterations = {10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000, 100000};
+
+        for (int iter : iterations) {
+            StringHashSet hashSet = new StringHashSet(); // Création d'une nouvelle instance de StringHashSet
+
+            long addTotalDuration = 0;
+            long containsTotalDuration = 0;
+
+            // Ajout des éléments à l'ensemble et mesure de la méthode contains
+            for (int i = 0; i < iter; i++) {
+                String element = "Element " + i;
+                
+                long addStartTime = System.nanoTime();
+                hashSet.add(element); // Ajout d'un élément à l'ensemble
+                long addEndTime = System.nanoTime();
+                addTotalDuration += (addEndTime - addStartTime); // Durée en nanosecondes
+
+                long containsStartTime = System.nanoTime();
+                hashSet.contains(element); // Recherche d'un élément spécifique dans l'ensemble
+                long containsEndTime = System.nanoTime();
+                containsTotalDuration += (containsEndTime - containsStartTime); // Durée en nanosecondes
+            }
+
+            long addAverageDuration = addTotalDuration / iter; // Calcul du temps d'exécution moyen pour add
+            long containsAverageDuration = containsTotalDuration / iter; // Calcul du temps d'exécution moyen pour contains
+
+            System.out.println("Pour " + iter + " itérations :");
+            System.out.println("Temps d'exécution moyen de la méthode add : " + addAverageDuration + " nanosecondes");
+            System.out.println("Temps d'exécution moyen de la méthode contains : " + containsAverageDuration + " nanosecondes");
+            System.out.println();
         }
-
-        StringHashSet shs2 = new StringHashSet();
-
-        for(int i = 0; i < 100000; i++) {
-            shs2.add("Element" + i);
-        }
-
-        StringHashSet shs3 = new StringHashSet();
-
-        for(int i = 0; i < 1000000; i++) {
-            shs3.add("Element" + i);
-        }
-    
-        // Mesurer le temps d'exécution de contains
-        long startTime = System.nanoTime(); 
-        boolean contient1 = shs1.contains("Element500");
-        long endTime = System.nanoTime(); 
-        long duration = endTime - startTime;
-
-        System.out.println("Temps d'exécution de contains: " + duration + " nanosecondes.");
-
-        // Mesurer le temps d'exécution de contains
-        long startTime2 = System.nanoTime(); 
-        boolean contient2 = shs2.contains("Element50000");
-        long endTime2 = System.nanoTime(); 
-        long duration2 = endTime2 - startTime2;
-
-        System.out.println("Temps d'exécution de contains2: " + duration2 + " nanosecondes.");
-
-        // Mesurer le temps d'exécution de contains
-        long startTime3 = System.nanoTime(); 
-        boolean contient3 = shs3.contains("Element500000");
-        long endTime3 = System.nanoTime(); 
-        long duration3 = endTime3 - startTime3;
-
-        System.out.println("Temps d'exécution de contains3: " + duration3 + " nanosecondes.");   
-        
     }
     
 }
