@@ -34,6 +34,7 @@ public class StringStackLinkedList {
         Noeud c = this.fin;
         c.setSuivant(nv);
         this.fin = nv;
+        //Noeud top = new Noeud(s, top);
     }
 
     String peek() {

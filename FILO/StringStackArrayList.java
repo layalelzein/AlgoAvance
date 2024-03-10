@@ -2,8 +2,6 @@ package FILO;
 
 import java.util.Iterator;
 
-import FILO.StringStackLinkedList.StringStackdTabListIterator;
-
 public class StringStackArrayList {
     //Partie tableau redimensionnée
     //private Scanner scanner = new Scanner(System.in);
@@ -103,11 +101,14 @@ public class StringStackArrayList {
     
         public StringStackdArrayListIterator(String[] data) {
             this.data = data;
+            //this.cpt = cpt;
         }
     
         @Override
         public String next() {
             return this.data[cpt++];
+            // return this.data[--cpt];
+
         }
     
         @Override

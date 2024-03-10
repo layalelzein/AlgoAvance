@@ -1,6 +1,7 @@
 package StringArrayList;
 
 import java.util.Iterator;
+import java.util.Random;
 
 public class StringArrayList implements Iterable<String> {
 
@@ -175,48 +176,43 @@ public class StringArrayList implements Iterable<String> {
             System.out.println(nextElement);
         }
 
-        StringArrayList sal1 = new StringArrayList();
+        int[] iterations = { 10000, 20000, 30000, 40000, 50000, 60000,70000,80000,90000,100000};
 
-        for (int i = 0; i < 1000; i++) {
-            sal1.add(i, "Element" + i); // Utilisation de la méthode add avec l'index
+        for (int iter : iterations) {
+            // Création d'une nouvelle instance de la classe StringArrayList
+            StringArrayList list = new StringArrayList();
+
+            // Mesure du temps d'exécution moyen de la méthode add
+            long addTotalDuration = 0;
+
+            // Mesure du temps d'exécution moyen de la méthode contains
+            long containsTotalDuration = 0;
+
+            // Ajout de des éléments à la liste et mesure de la méthode contains
+            for (int i = 0; i < iter; i++) {
+                long addStartTime = System.nanoTime();
+                list.addElement("Element " + i); // Ajout d'un élément à la liste
+                long addEndTime = System.nanoTime();
+                addTotalDuration += (addEndTime - addStartTime); // Durée en nanosecondes
+                
+                int j = new Random().nextInt(0, iter);
+                long containsStartTime = System.nanoTime();
+                list.contains("Element " + j); // Recherche d'un élément spécifique dans la liste
+                long containsEndTime = System.nanoTime();
+                containsTotalDuration += (containsEndTime - containsStartTime); // Durée en nanosecondes
+            }
+
+            // Calcul du temps d'exécution moyen pour add et contains
+            long addAverageDuration = addTotalDuration / (iter != 0 ? iter : 1); // Éviter la division par zéro
+            long containsAverageDuration = containsTotalDuration / (iter != 0 ? iter : 1); // Éviter la division par zéro
+
+            // Affichage du temps d'exécution moyen pour add et contains
+            System.out.println("Pour " + iter + " itérations :");
+            System.out.println("Temps d'exécution moyen de la méthode add : " + addAverageDuration + " nanosecondes");
+            System.out.println("Temps d'exécution moyen de la méthode contains : " + containsAverageDuration + " nanosecondes");
+            System.out.println();
         }
-        
-        StringArrayList sal2 = new StringArrayList();
-        
-        for (int i = 0; i < 100000; i++) {
-            sal2.add(i, "Element" + i); // Utilisation de la méthode add avec l'index
-        }
-        
-        StringArrayList sal3 = new StringArrayList();
-        
-        for (int i = 0; i < 1000000; i++) {
-            sal3.add(i, "Element" + i); // Utilisation de la méthode add avec l'index
-        }        
-        
-        // Mesurer le temps d'exécution de contains
-        long startTime = System.nanoTime();
-        boolean contient1 = sal1.contains("Element500");
-        long endTime = System.nanoTime();
-        long duration = endTime - startTime;
-        
-        System.out.println("Temps d'exécution de contains pour sal1 : " + duration + " nanosecondes.");
-        
-        // Mesurer le temps d'exécution de contains
-        long startTime2 = System.nanoTime();
-        boolean contient2 = sal2.contains("Element50000");
-        long endTime2 = System.nanoTime();
-        long duration2 = endTime2 - startTime2;
-        
-        System.out.println("Temps d'exécution de contains pour sal2 : " + duration2 + " nanosecondes.");
-        
-        // Mesurer le temps d'exécution de contains
-        long startTime3 = System.nanoTime();
-        boolean contient3 = sal3.contains("Element500000");
-        long endTime3 = System.nanoTime();
-        long duration3 = endTime3 - startTime3;
-        
-        System.out.println("Temps d'exécution de contains pour sal3 : " + duration3 + " nanosecondes.");
-        
+
     }
 
     public Iterator<String> iterator() {
