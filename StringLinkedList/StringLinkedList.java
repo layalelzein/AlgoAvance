@@ -7,7 +7,6 @@ public class StringLinkedList implements Iterable<String> {
 
     //Référence du premier noeud de la liste
     Noeud debut;
-    Noeud fin;
 
     public String toString() {
         String result = "";
@@ -19,8 +18,8 @@ public class StringLinkedList implements Iterable<String> {
         return result;
     }
 
-    boolean addElement(String data) {
-        Noeud newNode = new Noeud(data, null);
+    boolean addElement(String s) {
+        Noeud newNode = new Noeud(s, null);
 
         if (this.debut == null) {
             // Si la liste est vide, le nouveau nœud devient le premier nœud
@@ -58,6 +57,7 @@ public class StringLinkedList implements Iterable<String> {
         Noeud newNode = new Noeud(data, null);
 
         if (index == 0) {
+            // this.debut = new Noeud(data, this.debut);
             newNode.setSuivant(this.debut);
             this.debut = newNode;
             return;
@@ -71,7 +71,7 @@ public class StringLinkedList implements Iterable<String> {
             currentIndex++;
         }
 
-        if (courant == null) {
+        if (courant == null || courant.getSuivant() == null){
             throw new IndexOutOfBoundsException("Index out of bounds");
         }
 
@@ -79,8 +79,29 @@ public class StringLinkedList implements Iterable<String> {
         courant.setSuivant(newNode);
     }
 
-    void addFirst(String data) {
-        this.debut = new Noeud(data, this.debut);
+    //     if (this.debut == null) {
+        //  Si la liste est vide, créer un nouveau nœud et le définir comme le début de la liste
+        // if (index != 0) {
+        //     throw new IndexOutOfBoundsException("Index is out of range");
+        // }
+        // this.debut = new Noeud(data, null);
+        // return;
+    // }
+
+
+    //     Noeud courant = this.debut;
+    //     int currentIndex = 1;
+
+    //     while (courant.getSuivant() != null && currentIndex < index) {
+    //         courant = courant.getSuivant();
+    //         currentIndex++;
+    //     }
+
+    //     courant.setSuivant(new Noeud(data, courant.getSuivant()));
+
+
+    void addFirst(String s) {
+        this.debut = new Noeud(s, this.debut);
     }
 
     //Je fais revenir le pointeur de référence à 0 et donc le pointeur du noeud est null
@@ -88,10 +109,10 @@ public class StringLinkedList implements Iterable<String> {
         this.debut = null;
     }
 
-    boolean contains(String data) {
+    boolean contains(String s) {
         Noeud courant = this.debut;
         while (courant != null) {
-            if (data == courant.getData()) {
+            if (courant.getData().equals(s)) {
                 return true;
             } else
                 courant = courant.getSuivant();
@@ -103,7 +124,7 @@ public class StringLinkedList implements Iterable<String> {
         Noeud courant = this.debut;
         int currentIndex = 0;
 
-        if (courant == null) {
+        if (courant == null || index < 0) {
             throw new IndexOutOfBoundsException("Index out of bounds");
         }
 
@@ -111,17 +132,26 @@ public class StringLinkedList implements Iterable<String> {
             courant = courant.getSuivant();
             currentIndex++;
         }
-
-        return courant.getData();
+        
+        if(courant == null)
+            return courant.getData();
+        else
+            throw new IndexOutOfBoundsException("Index out of bounds");
     }
 
     String getFirst() {
-        Noeud courant = this.debut;
-        return courant.getData();
+        if (debut == null) {
+            throw new NoSuchElementException("List is empty");
+        }
+        
+        return this.debut.getData();
     }
 
     String getLast() {
         Noeud courant = this.debut;
+        if (courant == null) {
+            throw new NoSuchElementException("List is empty");
+        }
         while (courant.getSuivant() != null) {
             courant = courant.getSuivant();
         }
@@ -136,10 +166,15 @@ public class StringLinkedList implements Iterable<String> {
 
     boolean offer(String s) {
         Noeud courant = this.debut;
+        Noeud nv = new Noeud(s, null);
+
+        if(courant == null) {
+            this.debut = nv;
+            return true;
+        }
         while (courant.getSuivant() != null) {
             courant = courant.getSuivant();
         }
-        Noeud nv = new Noeud(s, null);
         courant.setSuivant(nv);
         return true;
     }
@@ -156,20 +191,35 @@ public class StringLinkedList implements Iterable<String> {
 
     //empiler un elem sur la pile
     void push(String s) {
-        Noeud nv = new Noeud(s, this.debut);
-        this.debut = nv;
+        if(this.debut == null) {
+            this.debut = new Noeud(s, null);
+            return;
+        }
+        
+        this.debut = new Noeud(s, this.debut);
     }
 
 
     //remove le 1er element et retourne sa data
     String remove() {
+        if (debut == null) {
+            return null;
+        }
         String data = this.debut.getData();
-        Noeud newFirst = this.debut.getSuivant();
-        this.debut = newFirst;
+        
+        this.debut = this.debut.getSuivant();
         return data;
     }
 
     String removeLast() {
+        if (this.debut == null) {
+            return null;
+        }
+        if (this.debut.getSuivant() == null) {
+            String data = this.debut.getData();
+            this.debut = null;
+            return data;
+        }
         Noeud courant = this.debut;
         while (courant.getSuivant().getSuivant() != null) {
             courant = courant.getSuivant();
@@ -183,12 +233,21 @@ public class StringLinkedList implements Iterable<String> {
     String remove(int index) {
         int currentIndex = 0;
         Noeud courant = this.debut;
+        if(index < 0)
+            throw new IndexOutOfBoundsException("Index out of bounds");
+        if(courant == null) {
+            throw new NoSuchElementException("List is empty");
+        }
+        
         if (index == 0) {
             this.debut = courant.getSuivant();
             return courant.getData();
         }
         while (currentIndex++ < index - 1) {
             courant = courant.getSuivant();
+        }
+        if (courant == null) {
+            throw new IndexOutOfBoundsException("Index is out of bounds");
         }
         String data = courant.getSuivant().getData();
         courant.setSuivant(courant.getSuivant().getSuivant());
@@ -199,8 +258,14 @@ public class StringLinkedList implements Iterable<String> {
     String set(int index, String s) {
         Noeud courant = this.debut;
         int currentIndex = 0;
-        while (currentIndex++ < index) {
+        if (index < 0 || debut == null) {
+            throw new IndexOutOfBoundsException("Index is out of bounds");
+        }
+        while (currentIndex++ < index && courant != null) {
             courant = courant.getSuivant();
+        }
+        if (courant == null) {
+            throw new IndexOutOfBoundsException("Index is out of bounds");
         }
         String data = courant.getData();
         courant.setData(s);
@@ -215,7 +280,65 @@ public class StringLinkedList implements Iterable<String> {
             courant = courant.getSuivant();
         }
         return size;
+    //     int size = 0;
+    // Noeud courant = debut;
+    
+    // while (courant != null) {
+    //     size++;
+    //     courant = courant.getSuivant();
+    // }
+    
+    // return size;
     }
+
+    // public String removeDLL(int index) {
+    //     Noeud courant = this.debut;
+    //     int cpt = 0;
+    //     String removedData = null;
+    //     if (index < 0 ) {
+    //         throw new IndexOutOfBoundsException("Index is out of bounds");
+    //     }
+    //     if(debut == null) {
+    //         throw new NoSuchElementException("List is empty");
+    //     }
+
+    //     // Si on supprime le premier élément
+    //     if (index == 0) {
+    //         removedData = courant.getData();
+            
+    //         if (courant.getSuivant() != null) {
+    //             this.debut = courant.getSuivant();
+    //             this.debut.setPrecedent(null);
+    //         } else {
+    //             this.debut = null; // La liste est maintenant vide
+    //         }
+    //         return removedData;
+    //     }
+    
+    //     while (cpt < index - 1 && courant != null) {
+    //         courant = courant.suivant;
+    //         cpt++;
+    //     }
+    
+    //     // Vérifier si l'index est valide
+    //     if (courant.getSuivant() == null || courant == null) {
+    //         throw new IndexOutOfBoundsException("Index is out of bounds");
+    //     }
+    
+    //     // Supprimer le nœud à l'index spécifié
+    //     removedData = courant.getSuivant().getData();
+    //     Noeud suivant = courant.getSuivant().getSuivant();
+    //     courant.setSuivant(suivant);
+    //     if (suivant != null) {
+    //         suivant.setPrecedent(courant);
+    //     } else {
+    //         fin = courant; // Mise à jour de fin si le dernier nœud est supprimé
+    //     }
+        
+    //     return removedData;
+    // }
+    
+    
 
     public static void main(String[] args) {
         StringLinkedList sLL = new StringLinkedList();
@@ -225,7 +348,7 @@ public class StringLinkedList implements Iterable<String> {
         sLL.add(1, "Troisième");
         sLL.add(3, "nino");
         System.out.println("Contenu du tableau : " + sLL.toString());
-        System.out.println("Index 1 : " + sLL.get(1));
+        System.out.println("Index 1 : " + sLL.get(3));
         System.out.println("Premier élément : " + sLL.getFirst());
         System.out.println("Dernier élément : " + sLL.getLast());
         System.out.println("Contenu supp par index du tableau : " + sLL.remove(0));

@@ -1,4 +1,4 @@
-package FILO;
+package Stack_LIFO;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -10,68 +10,52 @@ import StringLinkedList.StringLinkedList.StringLinkedListIterator;
 public class StringStackLinkedList {
 
     //Partie chainée
-    Noeud debut;
-    Noeud fin;
+    Couche top;
 
     public String toString() {
         String result = "";
-        Noeud courant = this.debut;
+        Couche courant = this.top;
         while (courant != null) {
             result += courant.getData() + " ";
-            courant = courant.getSuivant();
+            courant = courant.getBottom();
         }
         return result;
     }
 
+    boolean isEmpty() {
+        return this.top == null;
+    }
+
+    // retourne l'élément au sommet de la pile sans l'enlever
+    String peek() {
+        if(this.top == null){
+            throw new NoSuchElementException("La pile est vide");
+        }
+        return this.top.getData();
+    }
+    
+    //retourne l'élément au sommet de la pile en l'enlevant
+    String poll() {
+        if(this.top == null){
+            throw new NoSuchElementException("La pile est vide");
+        }
+        String removedElement = this.top.getData();
+        this.top = this.top.getBottom();
+        return removedElement;
+    }
+
     //empiler un elem sur la pile
     void push(String s) {
-        Noeud nv = new Noeud(s,null);
-        if(this.fin == null){
-            this.debut = nv;
-            this.fin = nv;
-            return;
+        if(this.top == null){
+            this.top = new Couche(s, null);
+        } else {
+            this.top = new Couche(s, this.top);        
         }
-        Noeud c = this.fin;
-        c.setSuivant(nv);
-        this.fin = nv;
-        //Noeud top = new Noeud(s, top);
-    }
-
-    String peek() {
-        if(this.fin == null){
-            throw new NoSuchElementException("La pile est vide");
-        }
-        return this.fin.getData();
-    }
-
-    String poll() {
-        String value = this.fin.getData();
-        Noeud courant = this.debut;
-        if(courant == null){
-            throw new NoSuchElementException("La pile est vide");
-        }
-        if(courant.getSuivant()==null){
-            this.debut = null;
-            this.fin = null;
-            return value;
-        }
-        while(courant.getSuivant().getSuivant() != null) {
-            courant = courant.getSuivant();
-        }
-        courant.setSuivant(null);
-        this.fin = courant;
-        return value;
-    }
-
-    boolean isEmpty() {
-        return this.fin == null;
     }
 
     public Iterator<String> iterator() {
-        return new StringStackdLinkedListIterator(this.debut);
-    }
-
-    
+        return new StringStackdLinkedListIterator(this.top);
+    }    
 
     public static void main(String[] args) {
         StringStackLinkedList sS = new StringStackLinkedList();
@@ -108,10 +92,10 @@ public class StringStackLinkedList {
         }
 
     public static class StringStackdLinkedListIterator implements Iterator<String> {
-        private Noeud courant;
+        private Couche courant;
     
-        public StringStackdLinkedListIterator(Noeud debut) {
-            this.courant = debut;
+        public StringStackdLinkedListIterator(Couche top) {
+            this.courant = top;
         }
     
         @Override
@@ -125,7 +109,7 @@ public class StringStackLinkedList {
                 throw new NoSuchElementException();
             }
             String data = courant.getData();
-            courant = courant.getSuivant();
+            courant = courant.getBottom();
             return data;
         }
     }

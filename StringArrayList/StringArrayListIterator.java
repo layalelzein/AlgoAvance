@@ -21,9 +21,5 @@ public class StringArrayListIterator implements Iterator<String> {
         if (cpt < data.length)
             return this.data[cpt] != null;
         return false;
-    }
-
-    //ou mettre
-    // return cpt < data.length;
-    
+    }    
 }

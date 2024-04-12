@@ -1,4 +1,4 @@
-package FILO;
+package Stack_LIFO;
 
 import java.util.Iterator;
 
@@ -18,30 +18,6 @@ public class StringStackArrayList {
         return string;
     }
 
-    public boolean pushTab(String s) {
-        ensureCapacity(nb + 1);
-        if (nb < data.length) {
-            data[nb] = s;
-            nb++;
-        }
-        return true;
-    }
-
-    public String pollTab() {
-        String value = data[nb - 1];
-        data[nb - 1] = null;
-        --nb;
-        return value;
-    }
-
-    public String peekTab() {
-        if (data[nb-1] == null) {
-            return null;
-        }
-        return data[nb-1];
-    }
-    
-
     void ensureCapacity(int minCapacity) {
         if (minCapacity > data.length) {
             String[] tab2 = new String[2 * data.length];
@@ -51,9 +27,31 @@ public class StringStackArrayList {
             data = tab2;
         }
     }
-    
+
     boolean isEmptyTab() {
         return nb == 0;
+    }
+
+    public String peekTab() {
+        if (data[nb-1] == null) {
+            return null;
+        }
+        return data[nb-1];
+    }
+
+    public String popTab() {
+        if (nb == 0) {
+            return null; // La pile est vide
+        }
+        String removedElement = data[--nb];
+        data[nb] = null;
+        return removedElement;
+    }
+
+    public boolean pushTab(String item) {
+        ensureCapacity(nb + 1);
+            data[nb++] = item;
+        return true;
     }
     
     public Iterator<String> iteratorTab() {
@@ -81,13 +79,13 @@ public class StringStackArrayList {
         System.out.println("Contenu du tableau : " + sSTab.toStrTab());
         System.out.println("Dernier élément sans l'enlever : " + sSTab.peekTab());
         System.out.println("Contenu du tableau : " + sSTab.toStrTab());
-        System.out.println("Dernier élément en enlevant : " + sSTab.pollTab());
+        System.out.println("Dernier élément en enlevant : " + sSTab.popTab());
         System.out.println("Contenu du tableau : " + sSTab.toStrTab());
 
         System.out.println("La pile est vide ? : " + sSTab.isEmptyTab());
 
         for(int i=0; i<2; i++) {
-            sSTab.pollTab();
+            sSTab.popTab();
         }
         
         System.out.println("Contenu du tableau : " + sSTab.toStrTab());

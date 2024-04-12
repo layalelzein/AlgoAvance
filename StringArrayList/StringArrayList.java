@@ -9,6 +9,16 @@ public class StringArrayList implements Iterable<String> {
     String[] data = new String[100];
     int nb;
 
+    String toStr() {
+        String string = "";
+        for (int i = 0; i < nb; i++) {
+            if (data[i] == null)
+                return string;
+            string += data[i] + " ";
+        }
+        return string;
+    }
+
     void ensureCapacity(int minCapacity) {
         if (minCapacity > data.length) {
             String[] tab2 = new String[2 * data.length];
@@ -19,6 +29,7 @@ public class StringArrayList implements Iterable<String> {
         }
     }
 
+    //Une fois que le tableau il est plein, on double la taille du tableau
     boolean addElement(String element) {
         ensureCapacity(nb + 1);
         if (nb < data.length) {
@@ -28,13 +39,22 @@ public class StringArrayList implements Iterable<String> {
         }
         return false;
     }
+    // Mieux
+    // boolean addElement(String element) {
+    //     ensureCapacity(nb + 1);
+    //     data[nb++] = element;    
+    //     return true;
+    // }
 
-    void add(int index, String s) {
+    void add(int index, String element) {
+        if (index < 0 || index > nb) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", nb: " + nb);
+        }
         ensureCapacity(nb + 1);
         for (int i = nb; i > index; i--) {
             data[i] = data[i - 1];
         }
-        data[index] = s;
+        data[index] = element;
         nb++;
     }
 
@@ -47,6 +67,13 @@ public class StringArrayList implements Iterable<String> {
         return false;
     }
 
+    String get(int index) {
+        if (index < 0 || index >= nb) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", nb: " + nb);
+        }
+        return data[index];
+    }
+
     int indexOf(String element) {
         for (int i = 0; i < nb; i++) {
             if (data[i].equals(element)) {
@@ -56,35 +83,14 @@ public class StringArrayList implements Iterable<String> {
         return -1;
     }
 
-    int size() {
-        return nb;
-    }
-
-    void get(int i) {
-        System.out.println(data[i]);
-    }
-
-    String toStr() {
-        String string = "";
-        for (int i = 0; i < nb; i++) {
-            if (data[i] == null)
-                return string;
-            string += data[i] + " ";
-        }
-        return string;
-    }
-
     boolean isEmpty() {
         return nb == 0;
     }
 
-    String set(int index, String element) {
-        String oldElement = data[index];
-        data[index] = element;
-        return oldElement;
-    }
-
     String remove(int index) {
+        if (index < 0 || index > nb) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", nb: " + nb);
+        }
         String element = data[index];
         for (int i = index; i < data.length - 1; i++) {
             data[i] = data[i + 1];
@@ -104,6 +110,20 @@ public class StringArrayList implements Iterable<String> {
     return removedElement;
          */
     }
+
+    String set(int index, String element) {
+        String oldElement = data[index];
+        data[index] = element;
+        return oldElement;
+    }
+
+    int size() {
+        return nb;
+    }
+
+    public Iterator<String> iterator() {
+        return new StringArrayListIterator(this.data);
+    }    
 
     public static void main(String[] args) {
         StringArrayList sAL = new StringArrayList();
@@ -213,9 +233,5 @@ public class StringArrayList implements Iterable<String> {
             System.out.println();
         }
 
-    }
-
-    public Iterator<String> iterator() {
-        return new StringArrayListIterator(this.data);
     }
 }
