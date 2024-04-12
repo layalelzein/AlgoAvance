@@ -1,4 +1,4 @@
-package fr.pantheonsorbonne.cri.MyQueueChain;
+package StacksDeDan.MyQueueChain;
 
 import java.util.Iterator;
 

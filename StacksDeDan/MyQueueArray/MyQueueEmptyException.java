@@ -1,4 +1,4 @@
-package fr.pantheonsorbonne.cri.MyQueueArray;
+package StacksDeDan.MyQueueArray;
 
 public class MyQueueEmptyException extends Exception{
 
