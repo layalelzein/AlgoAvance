@@ -126,6 +126,7 @@ public class StringHashSet {
                 
                 long containsStartTime = System.nanoTime();
                 set.contains("Element " + i); // Recherche d'un élément dans l'ensemble
+
                 long containsEndTime = System.nanoTime();
                 containsTotalDuration += (containsEndTime - containsStartTime); // Durée en nanosecondes
             }
@@ -134,7 +135,6 @@ public class StringHashSet {
             long addAverageDuration = addTotalDuration / (iter != 0 ? iter : 1); // Éviter la division par zéro
             long containsAverageDuration = containsTotalDuration / (iter != 0 ? iter : 1); // Éviter la division par zéro
 
-            // Affichage du temps d'exécution moyen pour add et contains
             System.out.println("Pour " + iter + " itérations :");
             System.out.println("Temps d'exécution moyen de la méthode add : " + addAverageDuration + " nanosecondes");
             System.out.println("Temps d'exécution moyen de la méthode contains : " + containsAverageDuration + " nanosecondes");
