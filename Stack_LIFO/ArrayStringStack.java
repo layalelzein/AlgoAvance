@@ -2,7 +2,7 @@ package Stack_LIFO;
 
 import java.util.Iterator;
 
-public class StringStackArrayList {
+public class ArrayStringStack {
     //Partie tableau redimensionnée
     //private Scanner scanner = new Scanner(System.in);
     String[] data = new String[100];
@@ -33,6 +33,7 @@ public class StringStackArrayList {
     }
 
     public String peekTab() {
+        //nb == 0 fonctionne aussi
         if (data[nb-1] == null) {
             return null;
         }
@@ -41,7 +42,7 @@ public class StringStackArrayList {
 
     public String popTab() {
         if (nb == 0) {
-            return null; // La pile est vide
+            return null;
         }
         String removedElement = data[--nb];
         data[nb] = null;
@@ -59,7 +60,7 @@ public class StringStackArrayList {
     }
 
     public static void main(String[] args) {
-        StringStackArrayList sSTab = new StringStackArrayList();
+        ArrayStringStack sSTab = new ArrayStringStack();
 
         sSTab.pushTab("lala");
         sSTab.pushTab("keke");
@@ -105,8 +106,6 @@ public class StringStackArrayList {
         @Override
         public String next() {
             return this.data[cpt++];
-            // return this.data[--cpt];
-
         }
     
         @Override
@@ -114,6 +113,7 @@ public class StringStackArrayList {
             if (cpt < data.length)
                 return this.data[cpt] != null;
             return false;
-        }        
+        }
+        //return cpt < nb; tout simplement      
     }
 }

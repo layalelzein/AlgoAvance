@@ -7,7 +7,7 @@ import StringArrayList.StringArrayListIterator;
 import StringLinkedList.StringLinkedList;
 import StringLinkedList.StringLinkedList.StringLinkedListIterator;
 
-public class StringStackLinkedList {
+public class LinkedStringStack {
 
     //Partie chainée
     Couche top;
@@ -58,7 +58,7 @@ public class StringStackLinkedList {
     }    
 
     public static void main(String[] args) {
-        StringStackLinkedList sS = new StringStackLinkedList();
+        LinkedStringStack sS = new LinkedStringStack();
 
         sS.push("lala");
         sS.push("keke");
